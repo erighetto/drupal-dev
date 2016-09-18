@@ -2,7 +2,7 @@ FROM php:7-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need (git for Composer, mysql-client for mysqldump)
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git mysql-client-5.5 wget \
+RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git mysql-client-5.6 wget nano \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
@@ -25,8 +25,8 @@ RUN {  \
 		echo "memory_limit = 512M"; \
 	} >> /usr/local/etc/php/php.ini
 
-#Install Drush 8.1.2
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.2/drush.phar && php drush.phar core-status && chmod +x drush.phar \
+#Install Drush 8.1.3
+RUN wget https://github.com/drush-ops/drush/releases/download/8.1.3/drush.phar && php drush.phar core-status && chmod +x drush.phar \
 	&& mv drush.phar /usr/local/bin/drush
 
 #Install Drupal Console
