@@ -25,8 +25,8 @@ RUN {  \
 		echo "memory_limit = 512M"; \
 	} >> /usr/local/etc/php/php.ini
 
-#Install Drush 8.1.3
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.3/drush.phar && php drush.phar core-status && chmod +x drush.phar \
+#Install Drush 8.1.7
+RUN wget https://github.com/drush-ops/drush/releases/download/8.1.7/drush.phar && php drush.phar core-status && chmod +x drush.phar \
 	&& mv drush.phar /usr/local/bin/drush
 
 #Install Drupal Console
@@ -39,3 +39,6 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 
 WORKDIR /var/www/html
+
+#it will fix problem with permission.
+RUN usermod -u 1000 www-data
