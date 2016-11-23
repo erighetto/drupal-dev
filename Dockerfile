@@ -2,10 +2,26 @@ FROM php:7-apache
 RUN a2enmod rewrite
 
 # install the PHP extensions we need (git for Composer, mysql-client for mysqldump)
-RUN apt-get update && apt-get install -y libpng12-dev libjpeg-dev libpq-dev git mysql-client-5.5 wget nano \
+RUN apt-get update && apt-get install -y \
+	nano \
+	git \
+	wget \
+	mysql-client \
+	ssmtp \
+	patch \
+	unzip \
+	openssh-server \
+	libpng12-dev \
+	libjpeg-dev \
+	libpq-dev \
+	libxml2-dev \
+	libcurl3 \
+	libcurl4-gnutls-dev \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip
+	&& docker-php-ext-install opcache gd mbstring pdo pdo_mysql pdo_pgsql zip mysqli calendar json curl xml soap \
+	&& pecl install xdebug \
+	&& docker-php-ext-enable xdebug
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -17,8 +33,6 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
-
-WORKDIR /root
 
 #Configure PHP settings
 RUN {  \
@@ -45,6 +59,8 @@ RUN {  \
 		echo ';xdebug.remote_cookie_expire_time = -9999'; \
 	} >> /usr/local/etc/php/conf.d/custom-php-settings.ini
 
+WORKDIR /root
+
 #Install Drush 8.1.7
 RUN wget https://github.com/drush-ops/drush/releases/download/8.1.7/drush.phar && php drush.phar core-status && chmod +x drush.phar \
 	&& mv drush.phar /usr/local/bin/drush
@@ -57,6 +73,30 @@ RUN drupal init
 #Install Composer
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
+
+# Test and Coding standard
+RUN curl -L https://phar.phpunit.de/phpunit.phar > /usr/local/bin/phpunit \
+  && curl -L http://www.phing.info/get/phing-latest.phar > /usr/local/bin/phing \
+  && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar > /usr/local/bin/phpcs \
+  && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar > /usr/local/bin/phpcbf \
+  && chmod 0755 /usr/local/bin/*
+
+# Configure additional coding-standards directory
+RUN mkdir -p /usr/local/share/coding-standards \
+  && phpcs --config-set installed_paths /usr/local/share/coding-standards
+
+# Install Symfony2 code styling
+RUN curl -L https://github.com/escapestudios/Symfony2-coding-standard/archive/master.zip > /tmp/Symfony2-coding-standard.zip \
+  && unzip /tmp/Symfony2-coding-standard.zip -d /tmp/Symfony2-coding-standard \
+  && mv /tmp/Symfony2-coding-standard/Symfony2-coding-standard-master/Symfony2 /usr/local/share/coding-standards \
+  && rm -rf /tmp/Symfony2-coding-standard*
+
+
+## Install Drupal code styling 
+RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.9.zip > /tmp/drupal-coder.zip \
+  && unzip /tmp/drupal-coder.zip -d /tmp/drupal-coder \
+  && mv /tmp/drupal-coder/coder/coder_sniffer/Drupal /usr/local/share/coding-standards \
+  && rm -rf /tmp/drupal-coder*
 
 WORKDIR /var/www/html
 
