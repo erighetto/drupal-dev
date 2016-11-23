@@ -17,11 +17,13 @@ RUN apt-get update && apt-get install -y \
 	libxml2-dev \
 	libcurl3 \
 	libcurl4-gnutls-dev \
-	&& rm -rf /var/lib/apt/lists/* \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
 	&& docker-php-ext-install opcache gd mbstring pdo pdo_mysql pdo_pgsql zip mysqli calendar json curl xml soap \
 	&& pecl install xdebug \
 	&& docker-php-ext-enable xdebug
+
+# Let's keep the house clean
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -34,7 +36,7 @@ RUN { \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-#Configure PHP settings
+# Configure PHP settings
 RUN {  \
 		echo ';;;;;;;;;; General ;;;;;;;;;;'; \
 		echo 'memory_limit = 512M'; \
@@ -61,25 +63,27 @@ RUN {  \
 
 WORKDIR /root
 
-#Install Drush 8.1.7
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.7/drush.phar && php drush.phar core-status && chmod +x drush.phar \
+# Install Drush 8.1.7
+RUN wget https://github.com/drush-ops/drush/releases/download/8.1.7/drush.phar && php drush.phar core-status \
 	&& mv drush.phar /usr/local/bin/drush
 
-#Install Drupal Console
-RUN curl http://drupalconsole.com/installer -L -o drupal.phar
-RUN mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
-RUN drupal init
+# Install Drupal Console
+RUN curl http://drupalconsole.com/installer -L -o drupal.phar \
+  && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal \
+  && drupal init
 
-#Install Composer
-RUN curl -sS https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php \
+  && mv composer.phar /usr/local/bin/composer
 
 # Test and Coding standard
 RUN curl -L https://phar.phpunit.de/phpunit.phar > /usr/local/bin/phpunit \
   && curl -L http://www.phing.info/get/phing-latest.phar > /usr/local/bin/phing \
   && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar > /usr/local/bin/phpcs \
-  && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar > /usr/local/bin/phpcbf \
-  && chmod 0755 /usr/local/bin/*
+  && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar > /usr/local/bin/phpcbf
+  
+# Set the permissions  
+RUN chmod 0755 /usr/local/bin/*
 
 # Configure additional coding-standards directory
 RUN mkdir -p /usr/local/share/coding-standards \
@@ -91,8 +95,7 @@ RUN curl -L https://github.com/escapestudios/Symfony2-coding-standard/archive/ma
   && mv /tmp/Symfony2-coding-standard/Symfony2-coding-standard-master/Symfony2 /usr/local/share/coding-standards \
   && rm -rf /tmp/Symfony2-coding-standard*
 
-
-## Install Drupal code styling 
+# Install Drupal code styling 
 RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.9.zip > /tmp/drupal-coder.zip \
   && unzip /tmp/drupal-coder.zip -d /tmp/drupal-coder \
   && mv /tmp/drupal-coder/coder/coder_sniffer/Drupal /usr/local/share/coding-standards \
@@ -100,5 +103,5 @@ RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.9.zip > /tmp/drupa
 
 WORKDIR /var/www/html
 
-#This will fix problem with permission
+# This will fix problem with permission
 RUN usermod -u 1000 www-data
