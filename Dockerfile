@@ -1,7 +1,7 @@
 FROM php:7-apache
 RUN a2enmod rewrite
 
-# install the PHP extensions we need (git for Composer, mysql-client for mysqldump)
+# Install the PHP extensions we need
 RUN apt-get update && apt-get install -y \
 	nano \
 	git \
@@ -25,40 +25,39 @@ RUN apt-get update && apt-get install -y \
 # Let's keep the house clean
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# set recommended PHP.ini settings
-# see https://secure.php.net/manual/en/opcache.installation.php
+# See https://secure.php.net/manual/en/opcache.installation.php
 RUN { \
-		echo 'opcache.memory_consumption=128'; \
-		echo 'opcache.interned_strings_buffer=8'; \
-		echo 'opcache.max_accelerated_files=4000'; \
-		echo 'opcache.revalidate_freq=60'; \
-		echo 'opcache.fast_shutdown=1'; \
-		echo 'opcache.enable_cli=1'; \
+  echo 'opcache.memory_consumption=128'; \
+  echo 'opcache.interned_strings_buffer=8'; \
+  echo 'opcache.max_accelerated_files=4000'; \
+  echo 'opcache.revalidate_freq=60'; \
+  echo 'opcache.fast_shutdown=1'; \
+  echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
 
-# Configure PHP settings
+# Set recommended PHP.ini settings
 RUN {  \
-		echo ';;;;;;;;;; General ;;;;;;;;;;'; \
-		echo 'memory_limit = 512M'; \
-		echo 'upload_max_filesize = 64M'; \
-		echo 'post_max_size = 64M'; \
-		echo 'max_execution_time = 600'; \
-		echo 'date.timezone = Europe/Rome'; \
-		echo 'error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING'; \
-		echo ' '; \
-		echo ';;;;;;;;;; Sendmail ;;;;;;;;;;'; \
-		echo 'sendmail_path = /usr/bin/env catchmail --smtp-ip mailcatcher --smtp-port 10025 -f test@example.com'; \
-		echo ' '; \
-		echo ';;;;;;;;;; xDebug ;;;;;;;;;;'; \
-		echo 'xdebug.remote_enable = 1'; \
-		echo 'xdebug.idekey = "phpstorm"'; \
-		echo 'xdebug.remote_host = 172.20.0.1'; \
-		echo 'xdebug.remote_port = 9000'; \
-		echo 'xdebug.remote_autostart = 0'; \
-		echo 'xdebug.profiler_enable = 0'; \
-		echo 'xdebug.remote_connect_back = 1'; \
-		echo 'xdebug.max_nesting_level = 256'; \
-		echo ';xdebug.remote_cookie_expire_time = -9999'; \
+  echo ';;;;;;;;;; General ;;;;;;;;;;'; \
+  echo 'memory_limit = 512M'; \
+  echo 'upload_max_filesize = 64M'; \
+  echo 'post_max_size = 64M'; \
+  echo 'max_execution_time = 600'; \
+  echo 'date.timezone = Europe/Rome'; \
+  echo 'error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING'; \
+  echo ' '; \
+  echo ';;;;;;;;;; Sendmail ;;;;;;;;;;'; \
+  echo 'sendmail_path = /usr/bin/env catchmail --smtp-ip mailcatcher --smtp-port 10025 -f test@example.com'; \
+  echo ' '; \
+  echo ';;;;;;;;;; xDebug ;;;;;;;;;;'; \
+  echo 'xdebug.remote_enable = 1'; \
+  echo 'xdebug.idekey = "phpstorm"'; \
+  echo 'xdebug.remote_host = 172.20.0.1'; \
+  echo 'xdebug.remote_port = 9000'; \
+  echo 'xdebug.remote_autostart = 0'; \
+  echo 'xdebug.profiler_enable = 0'; \
+  echo 'xdebug.remote_connect_back = 1'; \
+  echo 'xdebug.max_nesting_level = 256'; \
+  echo ';xdebug.remote_cookie_expire_time = -9999'; \
 	} >> /usr/local/etc/php/conf.d/custom-php-settings.ini
 
 WORKDIR /root
@@ -72,7 +71,6 @@ RUN curl http://drupalconsole.com/installer -L -o drupal.phar \
   && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal \
   && drupal init
 
-# Install Composer
 # Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php -r "if (hash_file('SHA384', 'composer-setup.php') === 'aa96f26c2b67226a324c27919f1eb05f21c248b987e6195cad9690d5c1ff713d53020a02ac8c217dbf90a7eacc9d141d') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
