@@ -1,4 +1,7 @@
 FROM php:7-apache
+
+MAINTAINER Emanuel Righetto <posta@emanuelrighetto.it>
+
 RUN a2enmod rewrite
 
 # Install the PHP extensions we need
@@ -33,7 +36,7 @@ RUN { \
   echo 'opcache.revalidate_freq=60'; \
   echo 'opcache.fast_shutdown=1'; \
   echo 'opcache.enable_cli=1'; \
-	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+	} >> /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # Set recommended PHP.ini settings
 RUN {  \
