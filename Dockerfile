@@ -62,8 +62,8 @@ RUN {  \
 
 WORKDIR /root
 
-# Install Drush 8.1.7
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.7/drush.phar && php drush.phar core-status \
+# Install Drush 8.1.8
+RUN wget https://github.com/drush-ops/drush/releases/download/8.1.8/drush.phar && php drush.phar core-status \
 	&& mv drush.phar /usr/local/bin/drush
 
 # Install Drupal Console
@@ -83,8 +83,8 @@ RUN curl -L https://phar.phpunit.de/phpunit.phar > /usr/local/bin/phpunit \
   && curl -L http://www.phing.info/get/phing-latest.phar > /usr/local/bin/phing \
   && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar > /usr/local/bin/phpcs \
   && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar > /usr/local/bin/phpcbf
-  
-# Set the permissions  
+
+# Set the permissions
 RUN chmod 0755 /usr/local/bin/*
 
 # Configure additional coding-standards directory
@@ -97,7 +97,7 @@ RUN curl -L https://github.com/escapestudios/Symfony2-coding-standard/archive/ma
   && mv /tmp/Symfony2-coding-standard/Symfony2-coding-standard-master/Symfony2 /usr/local/share/coding-standards \
   && rm -rf /tmp/Symfony2-coding-standard*
 
-# Install Drupal code styling 
+# Install Drupal code styling
 RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.9.zip > /tmp/drupal-coder.zip \
   && unzip /tmp/drupal-coder.zip -d /tmp/drupal-coder \
   && mv /tmp/drupal-coder/coder/coder_sniffer/Drupal /usr/local/share/coding-standards \
