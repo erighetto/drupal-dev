@@ -65,8 +65,8 @@ RUN {  \
 
 WORKDIR /root
 
-# Install Drush 8.1.8
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.8/drush.phar && php drush.phar core-status \
+# Install Drush 8.1.9
+RUN wget https://github.com/drush-ops/drush/releases/download/8.1.9/drush.phar && php drush.phar core-status \
 	&& mv drush.phar /usr/local/bin/drush
 
 # Install Drupal Console
@@ -101,7 +101,7 @@ RUN curl -L https://github.com/escapestudios/Symfony2-coding-standard/archive/ma
   && rm -rf /tmp/Symfony2-coding-standard*
 
 # Install Drupal code styling
-RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.9.zip > /tmp/drupal-coder.zip \
+RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.10.zip > /tmp/drupal-coder.zip \
   && unzip /tmp/drupal-coder.zip -d /tmp/drupal-coder \
   && mv /tmp/drupal-coder/coder/coder_sniffer/Drupal /usr/local/share/coding-standards \
   && rm -rf /tmp/drupal-coder*
