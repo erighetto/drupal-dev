@@ -49,7 +49,7 @@ RUN {  \
   echo 'error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING'; \
   echo ' '; \
   echo ';;;;;;;;;; Sendmail ;;;;;;;;;;'; \
-  echo 'sendmail_path = /usr/bin/env catchmail --smtp-ip mailcatcher --smtp-port 10025 -f test@example.com'; \
+  echo 'sendmail_path = /usr/sbin/ssmtp -t'; \
   echo ' '; \
   echo ';;;;;;;;;; xDebug ;;;;;;;;;;'; \
   echo 'xdebug.remote_enable = 1'; \
@@ -62,6 +62,9 @@ RUN {  \
   echo 'xdebug.max_nesting_level = 256'; \
   echo ';xdebug.remote_cookie_expire_time = -9999'; \
 	} >> /usr/local/etc/php/conf.d/custom-php-settings.ini
+
+# Send mail conf
+RUN echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 WORKDIR /root
 
