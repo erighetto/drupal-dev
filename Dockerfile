@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 	libcurl3 \
 	libcurl4-gnutls-dev \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install opcache gd mbstring pdo pdo_mysql pdo_pgsql zip mysqli calendar json curl xml soap \
+	&& docker-php-ext-install opcache gd mbstring pdo pdo_mysql pdo_pgsql zip mysqli calendar json curl xml soap bcmath \
 	&& pecl install xdebug \
 	&& docker-php-ext-enable xdebug
 
@@ -68,8 +68,8 @@ RUN echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/
 
 WORKDIR /root
 
-# Install Drush 8.1.9
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.9/drush.phar && php drush.phar core-status \
+# Install Drush 8.1.10
+RUN wget https://github.com/drush-ops/drush/releases/download/8.1.10/drush.phar && php drush.phar core-status \
 	&& mv drush.phar /usr/local/bin/drush
 
 # Install Drupal Console
