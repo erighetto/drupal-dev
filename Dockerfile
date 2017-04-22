@@ -21,9 +21,19 @@ RUN apt-get update && apt-get install -y \
 	libcurl3 \
 	libcurl4-gnutls-dev \
 	&& docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-	&& docker-php-ext-install opcache gd mbstring pdo pdo_mysql pdo_pgsql pdo_sqlite zip mysqli calendar json curl xml soap bcmath \
+	&& docker-php-ext-install gd mbstring opcache pdo pdo_mysql pdo_pgsql zip calendar json curl xml soap bcmath \
 	&& pecl install xdebug \
 	&& docker-php-ext-enable xdebug
+	
+# Install pecl-php-uploadprogress
+RUN git clone https://github.com/php/pecl-php-uploadprogress /tmp/php-uploadprogress && \
+        cd /tmp/php-uploadprogress && \
+        phpize && \
+        ./configure --prefix=/usr && \
+        make && \
+        make install && \
+        echo 'extension=uploadprogress.so' > /usr/local/etc/php/conf.d/uploadprogress.ini && \
+        rm -rf /tmp/*	
 
 # Let's keep the house clean
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
