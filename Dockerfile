@@ -66,17 +66,6 @@ RUN {  \
 # Send mail conf
 RUN echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
-WORKDIR /root
-
-# Install Drush 8.1.10
-RUN wget https://github.com/drush-ops/drush/releases/download/8.1.10/drush.phar && php drush.phar core-status \
-	&& mv drush.phar /usr/local/bin/drush
-
-# Install Drupal Console
-RUN curl http://drupalconsole.com/installer -L -o drupal.phar \
-  && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal \
-  && drupal init
-
 # Install Composer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
@@ -84,31 +73,6 @@ RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 RUN php /tmp/composer-setup.php --no-ansi --install-dir=/usr/local/bin --filename=composer \
 	&& rm /tmp/composer-setup.php \
   && chmod +x /usr/local/bin/composer
-
-# Test and Coding standard
-RUN curl -L https://phar.phpunit.de/phpunit.phar > /usr/local/bin/phpunit \
-  && curl -L http://www.phing.info/get/phing-latest.phar > /usr/local/bin/phing \
-  && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar > /usr/local/bin/phpcs \
-  && curl -L https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar > /usr/local/bin/phpcbf
-
-# Set the permissions
-RUN chmod 0755 /usr/local/bin/*
-
-# Configure additional coding-standards directory
-RUN mkdir -p /usr/local/share/coding-standards \
-  && phpcs --config-set installed_paths /usr/local/share/coding-standards
-
-# Install Symfony2 code styling
-RUN curl -L https://github.com/escapestudios/Symfony2-coding-standard/archive/master.zip > /tmp/Symfony2-coding-standard.zip \
-  && unzip /tmp/Symfony2-coding-standard.zip -d /tmp/Symfony2-coding-standard \
-  && mv /tmp/Symfony2-coding-standard/Symfony2-coding-standard-master/Symfony2 /usr/local/share/coding-standards \
-  && rm -rf /tmp/Symfony2-coding-standard*
-
-# Install Drupal code styling
-RUN curl -L https://ftp.drupal.org/files/projects/coder-8.x-2.10.zip > /tmp/drupal-coder.zip \
-  && unzip /tmp/drupal-coder.zip -d /tmp/drupal-coder \
-  && mv /tmp/drupal-coder/coder/coder_sniffer/Drupal /usr/local/share/coding-standards \
-  && rm -rf /tmp/drupal-coder*
 
 WORKDIR /var/www/html
 
