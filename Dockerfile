@@ -76,6 +76,11 @@ RUN {  \
 # Send mail conf
 RUN echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
+# Install Drush for Drupal 7 backward compatibility
+RUN wget http://files.drush.org/drush.phar \
+  && chmod +x drush.phar \
+  && mv drush.phar /usr/local/bin/drush
+
 # Install Composer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
