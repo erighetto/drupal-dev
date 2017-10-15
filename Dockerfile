@@ -39,7 +39,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Set recommended PHP.ini settings
 RUN {  \
   echo ';;;;;;;;;; General ;;;;;;;;;;'; \
-  echo 'memory_limit = 2048M'; \
+  echo 'memory_limit = 1024M'; \
   echo 'max_input_vars = 5000'; \
   echo 'upload_max_filesize = 64M'; \
   echo 'post_max_size = 64M'; \
