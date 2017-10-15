@@ -48,11 +48,8 @@ RUN {  \
   echo 'extension = uploadprogress.so'; \
   echo ' '; \
   echo ';;;;;;;;;; Sendmail ;;;;;;;;;;'; \
-  echo 'sendmail_path = /usr/sbin/ssmtp -t'; \
+  echo '/usr/sbin/sendmail -S mail:1025'; \
   } >> /opt/docker/etc/php/php.ini
-
-# Send mail conf
-RUN echo "mailhub=mailcatcher:25\nUseTLS=NO\nFromLineOverride=YES" > /etc/ssmtp/ssmtp.conf
 
 # Install Drush for Drupal 7 backward compatibility
 RUN wget http://files.drush.org/drush.phar \
