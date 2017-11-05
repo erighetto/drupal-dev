@@ -49,7 +49,7 @@ RUN {  \
   echo 'extension = uploadprogress.so'; \
   echo ' '; \
   echo ';;;;;;;;;; Sendmail ;;;;;;;;;;'; \
-  echo 'sendmail_path = /usr/sbin/sendmail -S ${MAILCATCHER}:1025 -t'; \
+  echo 'sendmail_path = /usr/sbin/sendmail -S '"$MAILCATCHER"':1025 -t'; \
   } >> /opt/docker/etc/php/php.ini
 
 # Install Drush for Drupal 7 backward compatibility
