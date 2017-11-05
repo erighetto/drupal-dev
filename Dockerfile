@@ -7,7 +7,8 @@ ENV APPLICATION_USER=www-data \
     APPLICATION_GROUP=www-data \
     APPLICATION_PATH=/var/www/html \
     APPLICATION_UID=1000 \
-    APPLICATION_GID=1000
+    APPLICATION_GID=1000 \
+    MAILCATCHER=mailcatcher
 RUN usermod --non-unique --uid 1000 www-data
 RUN groupmod --non-unique --gid 1000 www-data
 
@@ -48,7 +49,7 @@ RUN {  \
   echo 'extension = uploadprogress.so'; \
   echo ' '; \
   echo ';;;;;;;;;; Sendmail ;;;;;;;;;;'; \
-  echo '/usr/sbin/sendmail -S mail:1025'; \
+  echo 'sendmail_path = /usr/sbin/sendmail -S $MAILCATCHER:1025 -t'; \
   } >> /opt/docker/etc/php/php.ini
 
 # Install Drush for Drupal 7 backward compatibility
