@@ -78,5 +78,5 @@ RUN {  \
 # Install Drush for Drupal 7 backward compatibility
 RUN wget http://files.drush.org/drush.phar \
 	  && chmod +x drush.phar \
-	  && mv drush.phar /usr/local/bin/drush
+	  && mv drush.phar /usr/local/bin/globaldrush
 
