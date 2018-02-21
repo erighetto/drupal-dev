@@ -1,7 +1,6 @@
 FROM webdevops/php-apache-dev:7.1
 
 MAINTAINER Emanuel Righetto <posta@emanuelrighetto.it>
-
 # Environment variables
 ENV APPLICATION_USER=www-data \
     APPLICATION_GROUP=www-data \
@@ -44,12 +43,16 @@ RUN docker-image-cleanup \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Add bash aliases
+# Add bash aliases and terminal conf
 RUN { \
+      echo ' '; \
       echo '# Add bash aliases.'; \
       echo 'if [ -f /var/www/html/.aliases ]; then'; \
       echo '    source /var/www/html/.aliases'; \
       echo 'fi'; \
+      echo ' '; \
+      echo '# Add terminal config.'; \
+      echo 'stty rows 45; stty columns 160;'; \      
     } >> /root/.bashrc
 
 # Exposing ports
@@ -74,9 +77,3 @@ RUN {  \
   echo 'extension = uploadprogress.so'; \
   echo ' '; \
   } >> /opt/docker/etc/php/php.ini
-
-# Install Drush for Drupal 7 backward compatibility
-RUN wget http://files.drush.org/drush.phar \
-	  && chmod +x drush.phar \
-	  && mv drush.phar /usr/local/bin/globaldrush
-
