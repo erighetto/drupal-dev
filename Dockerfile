@@ -34,6 +34,7 @@ RUN {  \
   echo 'post_max_size = 64M'; \
   echo 'max_execution_time = 6000'; \
   echo 'date.timezone = Europe/Rome'; \
+  echo ';;;;;;;;;; Xdebug ;;;;;;;;;;'; \
   echo 'xdebug.remote_host = "host.docker.internal"'; \
   echo 'xdebug.remote_autostart = 1'; \
   echo 'xdebug.remote_connect_back = 0'; \
