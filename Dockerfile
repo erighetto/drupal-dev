@@ -34,7 +34,6 @@ RUN {  \
   echo 'post_max_size = 64M'; \
   echo 'max_execution_time = 6000'; \
   echo 'date.timezone = Europe/Rome'; \
-  echo 'extension = uploadprogress.so'; \
   echo 'xdebug.remote_host = "host.docker.internal"'; \
   echo 'xdebug.default_enable = 1'; \
   echo 'xdebug.remote_autostart = 1'; \
