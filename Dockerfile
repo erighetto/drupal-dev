@@ -35,7 +35,6 @@ RUN {  \
   echo 'max_execution_time = 6000'; \
   echo 'date.timezone = Europe/Rome'; \
   echo 'xdebug.remote_host = "host.docker.internal"'; \
-  echo 'xdebug.default_enable = 1'; \
   echo 'xdebug.remote_autostart = 1'; \
   echo 'xdebug.remote_connect_back = 0'; \
   echo 'xdebug.remote_enable = 1'; \
