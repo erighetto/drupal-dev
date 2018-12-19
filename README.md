@@ -1,14 +1,13 @@
 # drupal-dev
 Drupal Development Enviroment featuring:
 
- - PHP 7.1  
+ - PHP 7.2  
  - Apache 2.4
  - Composer
- - php-uploadprogress
 
-extension of webdevops/php-apache-dev:7.1 image
+extension of webdevops/php-apache-dev:7.2 image
 
-cfr: https://github.com/webdevops/Dockerfile/tree/master/docker/php-apache-dev/7.1
+cfr: https://github.com/webdevops/Dockerfile/tree/master/docker/php-apache-dev/7.2
 
 For Drupal 7 you can easy install the last release compatible:
 
