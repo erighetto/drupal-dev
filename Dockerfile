@@ -2,7 +2,13 @@ FROM webdevops/php-apache-dev:7.2
 
 # Environment variables
 ENV APPLICATION_PATH=/var/www/html \
-    WEB_DOCUMENT_ROOT=/var/www/html/web
+    WEB_DOCUMENT_ROOT=/var/www/html/web \
+    XDEBUG_REMOTE_CONNECT_BACK=1 \
+    XDEBUG_REMOTE_AUTOSTART=1 \
+    XDEBUG_REMOTE_HOST=host.docker.internal \
+    XDEBUG_REMOTE_PORT=9000 \
+    PHP_MEMORY_LIMIT=1024M \
+    PHP_DATE_TIMEZONE=Europe/Rome
 
 # Commont tools
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
@@ -24,20 +30,6 @@ RUN docker-php-ext-configure gd \
 # Add application user to sudoers
 RUN usermod -aG sudo ${APPLICATION_USER} \
     && echo "${APPLICATION_USER} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${APPLICATION_USER}
-
-# Set recommended PHP.ini settings
-RUN {  \
-  echo ';;;;;;;;;; General ;;;;;;;;;;'; \
-  echo 'memory_limit = 1024M'; \
-  echo 'max_execution_time = 6000'; \
-  echo 'date.timezone = Europe/Rome'; \
-  echo ';;;;;;;;;;; Xdebug ;;;;;;;;;;;'; \
-  echo 'xdebug.remote_host = "host.docker.internal"'; \
-  echo 'xdebug.remote_autostart = 1'; \
-  echo 'xdebug.remote_handler = "dbgp"'; \
-  echo 'xdebug.remote_port = 9000'; \
-  echo ' '; \
-  } >> /opt/docker/etc/php/php.ini
 
 # Finalize installation and clean up
 RUN docker-run-bootstrap \
