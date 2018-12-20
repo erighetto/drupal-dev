@@ -3,6 +3,7 @@ FROM webdevops/php-apache-dev:7.2
 # Environment variables
 ENV APPLICATION_PATH=/var/www/html \
     WEB_DOCUMENT_ROOT=/var/www/html/web \
+    PHP_DEBUGGER=xdebug \
     XDEBUG_REMOTE_CONNECT_BACK=1 \
     XDEBUG_REMOTE_AUTOSTART=1 \
     XDEBUG_REMOTE_HOST=host.docker.internal \
