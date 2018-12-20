@@ -2,13 +2,7 @@ FROM webdevops/php-apache-dev:7.2
 
 # Environment variables
 ENV APPLICATION_PATH=/var/www/html \
-    WEB_DOCUMENT_ROOT=/var/www/html/web \
-    PHP_DEBUGGER=xdebug  \
-    PHP_MEMORY_LIMIT=1024M \
-    PHP_DATE_TIMEZONE=Europe/Rome \
-    PHP_DISPLAY_ERRORS=1 \
-    XDEBUG_REMOTE_HOST=host.docker.internal \
-    XDEBUG_REMOTE_PORT=9000
+    WEB_DOCUMENT_ROOT=/var/www/html/web
 
 # Commont tools
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
@@ -31,8 +25,24 @@ RUN docker-php-ext-configure gd \
 RUN usermod -aG sudo ${APPLICATION_USER} \
     && echo "${APPLICATION_USER} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${APPLICATION_USER}
 
-# Xdebug custom variables
-RUN echo 'xdebug.default_enable=1\nxdebug.remote_autostart=1\nxdebug.remote_handler="dbgp"' >> /opt/docker/etc/php/php.ini
+# Set custom PHP.ini settings
+RUN {  \
+  echo ';;;;;;;;;; General ;;;;;;;;;;'; \
+  echo 'memory_limit = 1024M'; \
+  echo 'max_input_vars = 5000'; \
+  echo 'upload_max_filesize = 64M'; \
+  echo 'post_max_size = 64M'; \
+  echo 'max_execution_time = 6000'; \
+  echo 'date.timezone = Europe/Rome'; \
+  echo 'display_errors = 1'; \
+  echo 'xdebug.remote_host = "host.docker.internal"'; \
+  echo 'xdebug.remote_autostart = 1'; \
+  echo 'xdebug.remote_connect_back = 1'; \
+  echo 'xdebug.remote_enable = 1'; \
+  echo 'xdebug.remote_handler = "dbgp"'; \
+  echo 'xdebug.remote_port = 9000'; \
+  echo ' '; \
+  } >> /opt/docker/etc/php/php.ini
 
 # Finalize installation and clean up
 RUN docker-run-bootstrap \
