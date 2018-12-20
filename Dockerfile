@@ -29,9 +29,6 @@ RUN usermod -aG sudo ${APPLICATION_USER} \
 RUN {  \
   echo ';;;;;;;;;; General ;;;;;;;;;;'; \
   echo 'memory_limit = 1024M'; \
-  echo 'max_input_vars = 5000'; \
-  echo 'upload_max_filesize = 64M'; \
-  echo 'post_max_size = 64M'; \
   echo 'max_execution_time = 6000'; \
   echo 'date.timezone = Europe/Rome'; \
   echo ';;;;;;;;;;; Xdebug ;;;;;;;;;;;'; \
