@@ -27,21 +27,21 @@ RUN usermod -aG sudo ${APPLICATION_USER} \
 
 # Set custom PHP.ini settings
 RUN {  \
-  echo ';;;;;;;;;; General ;;;;;;;;;;'; \
-  echo 'memory_limit = 1024M'; \
-  echo 'max_input_vars = 5000'; \
-  echo 'upload_max_filesize = 64M'; \
-  echo 'post_max_size = 64M'; \
-  echo 'max_execution_time = 6000'; \
-  echo 'date.timezone = Europe/Rome'; \
-  echo 'display_errors = 1'; \
-  echo 'xdebug.remote_host = "host.docker.internal"'; \
-  echo 'xdebug.remote_autostart = 1'; \
-  echo 'xdebug.remote_connect_back = 1'; \
-  echo 'xdebug.remote_enable = 1'; \
-  echo 'xdebug.remote_handler = "dbgp"'; \
-  echo 'xdebug.remote_port = 9000'; \
-  echo ' '; \
+      echo ';;;;;;;;;; General ;;;;;;;;;;'; \
+      echo 'memory_limit = 1024M'; \
+      echo 'max_input_vars = 5000'; \
+      echo 'upload_max_filesize = 64M'; \
+      echo 'post_max_size = 64M'; \
+      echo 'max_execution_time = 6000'; \
+      echo 'date.timezone = Europe/Rome'; \
+      echo 'display_errors = 1'; \
+      echo 'xdebug.remote_host = "host.docker.internal"'; \
+      echo 'xdebug.remote_autostart = 1'; \
+      echo 'xdebug.remote_connect_back = 1'; \
+      echo 'xdebug.remote_enable = 1'; \
+      echo 'xdebug.remote_handler = "dbgp"'; \
+      echo 'xdebug.remote_port = 9000'; \
+      echo ' '; \
   } >> /opt/docker/etc/php/php.ini
 
 # Finalize installation and clean up
