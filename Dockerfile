@@ -37,8 +37,6 @@ RUN {  \
   echo ';;;;;;;;;;; Xdebug ;;;;;;;;;;;'; \
   echo 'xdebug.remote_host = "host.docker.internal"'; \
   echo 'xdebug.remote_autostart = 1'; \
-  echo 'xdebug.remote_connect_back = 0'; \
-  echo 'xdebug.remote_enable = 1'; \
   echo 'xdebug.remote_handler = "dbgp"'; \
   echo 'xdebug.remote_port = 9000'; \
   echo ' '; \
