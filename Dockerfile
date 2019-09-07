@@ -1,4 +1,4 @@
-FROM webdevops/php-apache-dev:7.2
+FROM webdevops/php-apache-dev:7.3
 
 # Environment variables
 ENV APPLICATION_PATH=/var/www/html \
