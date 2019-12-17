@@ -15,7 +15,6 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
       sudo \
       gettext \
       libfreetype6-dev \
-      libjpeg62-turbo-dev \
       libpng-dev \
       default-mysql-client \
       nano
