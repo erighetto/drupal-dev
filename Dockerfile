@@ -17,7 +17,7 @@ RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
       libfreetype6-dev \
       libjpeg62-turbo-dev \
       libpng-dev \
-      mysql-client \
+      default-mysql-client \
       nano
 
 # Reconfigure GD
