@@ -42,9 +42,6 @@ RUN docker-run-bootstrap \
 # Change user
 USER ${APPLICATION_USER}
 
-# Composer parallel install plugin
-RUN composer global require hirak/prestissimo
-
 # Add bash aliases and terminal conf
 RUN { \
       echo ' '; \
