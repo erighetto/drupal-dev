@@ -39,11 +39,14 @@ RUN docker-run-bootstrap \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Rollback composer version
+RUN composer self-update --1
+
 # Change user
 USER ${APPLICATION_USER}
 
 # Composer parallel install plugin
-RUN composer self-update --1 && composer global require hirak/prestissimo
+RUN composer global require hirak/prestissimo
 
 # Add bash aliases and terminal conf
 RUN { \
